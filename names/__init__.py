@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 from os.path import abspath, join, dirname
 import random
+import math
 
 
 __title__ = 'names'
@@ -17,6 +18,18 @@ FILES = {
     'first:female': full_path('dist.female.first'),
     'last': full_path('dist.all.last'),
 }
+
+def get_full_names(N):
+    with open(FILES["first:male"]) as m:
+        male_names = [x.split()[0] for x in random.choices(m.readlines(), k=math.floor(N/2))]
+
+    with  open(FILES["first:female"]) as f:
+        female_names = [x.split()[0] for x in random.choices(f.readlines(), k=math.ceil(N/2))]
+
+    with open(FILES["last"]) as l:
+        last_names = [x.split()[0] for x in random.choices(l.readlines(), k=N)]
+
+    return [" ".join([f,l]) for f,l in zip(male_names + female_names, last_names)]
 
 
 def get_name(filename):
